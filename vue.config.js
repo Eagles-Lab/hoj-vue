@@ -2,6 +2,8 @@ const UglifyJsPlugin = require('uglifyjs-webpack-plugin') // 清除注释
 const CompressionWebpackPlugin = require('compression-webpack-plugin'); // 开启压缩
 
 const isProduction = process.env.NODE_ENV === 'production';
+const isCi = String(process.env.CI || '').toLowerCase() === 'true'
+const enableAnalyze = String(process.env.ANALYZE || '').toLowerCase() === 'true'
 const useCdnCss = process.env.USE_CDN_CSS ? String(process.env.USE_CDN_CSS).toLowerCase() === 'true' : true;
 const useCdnJs = process.env.USE_CDN_JS ? String(process.env.USE_CDN_JS).toLowerCase() === 'true' : true;
 
@@ -62,6 +64,10 @@ module.exports={
   //去除生产环境的productionSourceMap
   productionSourceMap: false,
 
+  /**
+   * 构建时的链式 Webpack 配置
+   * 仅在设置 ANALYZE=true 时启用 bundle 分析，避免在 CI 环境卡住
+   */
   chainWebpack: config => {
     // 注入cdn start
     config.plugin('html').tap(args => {
@@ -71,10 +77,19 @@ module.exports={
         }
         return args
     })
-    config.plugin('webpack-bundle-analyzer') // 查看打包文件体积大小
-      .use(require('webpack-bundle-analyzer').BundleAnalyzerPlugin)
+    if (enableAnalyze && !isCi) {
+      config.plugin('webpack-bundle-analyzer')
+        .use(require('webpack-bundle-analyzer').BundleAnalyzerPlugin, [{
+          analyzerMode: 'static',
+          openAnalyzer: false
+        }])
+    }
     // 注入cdn end
   },
+  /**
+   * 常规模块化 Webpack 配置修改
+   * 根据环境设置 externals 与压缩、gzip 等优化
+   */
   configureWebpack: (config) => {
     const plugins = [];
     if (!isProduction || useCdnJs) {

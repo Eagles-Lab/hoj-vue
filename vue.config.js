@@ -45,7 +45,7 @@ const cdnExternals = {
 }
 
 module.exports={
-  publicPath: '/',
+  publicPath: process.env.PUBLIC_PATH || '/',
   assetsDir: "assets",
   devServer: {
     open: false,  // npm run serve后自动打开页面

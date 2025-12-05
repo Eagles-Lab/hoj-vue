@@ -52,7 +52,7 @@ jobs:
       SSH_HOST: 110.42.61.198
       SSH_USER: root
       SSH_PORT: 22
-      REMOTE_DIR: /root/HOJ-Deploy/standAlone/hoj-vue/
+      REMOTE_DIR: /root/HOJ-Deploy/standAlone/hoj-vue
     steps:
       - name: Download build artifact
         uses: actions/download-artifact@v4
@@ -76,4 +76,4 @@ jobs:
 
       - name: Sync dist via rsync
         run: |
-          rsync -avz --delete -e "ssh -p $SSH_PORT" dist/ $SSH_USER@$SSH_HOST:$REMOTE_DIR/disk/
+          rsync -avz --delete -e "ssh -p $SSH_PORT" dist/ $SSH_USER@$SSH_HOST:$REMOTE_DIR/dist/

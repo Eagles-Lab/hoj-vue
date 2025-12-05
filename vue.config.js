@@ -4,8 +4,8 @@ const CompressionWebpackPlugin = require('compression-webpack-plugin'); // 开�
 const isProduction = process.env.NODE_ENV === 'production';
 const isCi = String(process.env.CI || '').toLowerCase() === 'true'
 const enableAnalyze = String(process.env.ANALYZE || '').toLowerCase() === 'true'
-const useCdnCss = process.env.USE_CDN_CSS ? String(process.env.USE_CDN_CSS).toLowerCase() === 'true' : true;
-const useCdnJs = process.env.USE_CDN_JS ? String(process.env.USE_CDN_JS).toLowerCase() === 'true' : true;
+const useCdnCss = process.env.USE_CDN_CSS ? String(process.env.USE_CDN_CSS).toLowerCase() === 'true' : false;
+const useCdnJs = process.env.USE_CDN_JS ? String(process.env.USE_CDN_JS).toLowerCase() === 'true' : false;
 
 // cdn链接
 const cdnCssLinks = [
@@ -92,7 +92,7 @@ module.exports={
    */
   configureWebpack: (config) => {
     const plugins = [];
-    if (!isProduction || useCdnJs) {
+    if (useCdnJs) {
       config.externals = cdnExternals
     }
     if (isProduction){

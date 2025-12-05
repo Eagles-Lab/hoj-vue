@@ -4,8 +4,8 @@ const CompressionWebpackPlugin = require('compression-webpack-plugin'); // 开�
 const isProduction = process.env.NODE_ENV === 'production';
 const isCi = String(process.env.CI || '').toLowerCase() === 'true'
 const enableAnalyze = String(process.env.ANALYZE || '').toLowerCase() === 'true'
-const useCdnCss = process.env.USE_CDN_CSS ? String(process.env.USE_CDN_CSS).toLowerCase() === 'true' : false;
-const useCdnJs = process.env.USE_CDN_JS ? String(process.env.USE_CDN_JS).toLowerCase() === 'true' : false;
+const useCdnCss = process.env.USE_CDN_CSS ? String(process.env.USE_CDN_CSS).toLowerCase() === 'true' : true;
+const useCdnJs = process.env.USE_CDN_JS ? String(process.env.USE_CDN_JS).toLowerCase() === 'true' : true;
 
 // cdn链接
 const cdnCssLinks = [
@@ -16,20 +16,20 @@ const cdnCssLinks = [
 ]
 const cdnJsLinks = [
   "https://cdn.jsdelivr.net/npm/vue@2.6.11/dist/vue.min.js",
-  "https://cdn.bootcdn.net/ajax/libs/vue-router/3.2.0/vue-router.min.js",
+  "https://cdn.jsdelivr.net/npm/vue-router@3.2.0/dist/vue-router.min.js",
   "https://unpkg.com/axios@1.6.7/dist/axios.min.js",
   "https://cdn.jsdelivr.net/npm/element-ui@2.15.14/lib/index.min.js",
-  "https://cdn.bootcdn.net/ajax/libs/highlight.js/10.3.2/highlight.min.js",
-  "https://cdn.bootcdn.net/ajax/libs/moment.js/2.29.1/moment.min.js",
-  "https://cdn.bootcdn.net/ajax/libs/moment.js/2.29.1/locale/zh-cn.js",
-  "https://cdn.bootcdn.net/ajax/libs/moment.js/2.29.1/locale/en-gb.js",
+  "https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.3.2/build/highlight.min.js",
+  "https://cdn.jsdelivr.net/npm/moment@2.29.1/min/moment.min.js",
+  "https://cdn.jsdelivr.net/npm/moment@2.29.1/locale/zh-cn.js",
+  "https://cdn.jsdelivr.net/npm/moment@2.29.1/locale/en-gb.js",
   "https://cdn.jsdelivr.net/npm/echarts@4.9.0/dist/echarts.js",
   "https://cdn.jsdelivr.net/npm/vue-echarts@5.0.0-beta.0/dist/vue-echarts.js",
-  "https://cdn.bootcdn.net/ajax/libs/vuex/3.5.1/vuex.min.js",
+  "https://cdn.jsdelivr.net/npm/vuex@3.5.1/dist/vuex.min.js",
   "https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.js",
   "https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/contrib/auto-render.min.js",
-  "https://cdn.bootcdn.net/ajax/libs/muse-ui/3.0.2/muse-ui.min.js",
-  "https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js",
+  "https://cdn.jsdelivr.net/npm/muse-ui@3.0.2/dist/muse-ui.min.js",
+  "https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js",
 ]
 const cdnExternals = {
   vue: 'Vue',
@@ -92,7 +92,7 @@ module.exports={
    */
   configureWebpack: (config) => {
     const plugins = [];
-    if (useCdnJs) {
+    if (isProduction || useCdnJs) {
       config.externals = cdnExternals
     }
     if (isProduction){

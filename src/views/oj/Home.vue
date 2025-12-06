@@ -28,7 +28,8 @@
             >
               <el-image
                 :src="item.url"
-                fit="fill"
+                fit="cover"
+                style="width: 100%; height: 100%"
               >
                 <div
                   slot="error"
@@ -647,9 +648,7 @@ li {
 .contest-status {
   float: right;
 }
-.img-carousel {
-  height: 490px;
-}
+
 
 @media screen and (max-width: 768px) {
   .contest-status {
@@ -661,7 +660,6 @@ li {
     text-align: center;
   }
   .img-carousel {
-    height: 220px;
     overflow: hidden;
   }
   .phone-margin {

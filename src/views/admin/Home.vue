@@ -504,7 +504,7 @@
         <router-view></router-view>
       </transition>
       <div class="footer">
-        Powered by UJS_OJ
+        Powered by EaglesLab
         <span style="margin-left:10px">
           <el-dropdown @command="changeWebLanguage" placement="top">
             <span class="el-dropdown-link" style="font-size:14px">
